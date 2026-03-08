@@ -1,0 +1,92 @@
+nnl -ba README.md | sed -n '43,68p'l -ba README.md | sed -n '43,68p'
+git remote set-url origin https://github.com/lienyscarvalho/CodexApp.git
+git push -u origin work
+git checkout -b main
+git push -u origin main
+ (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
+diff --git a/README.md b/README.md
+index efaf48fdeb6592b4f009ad65d635f7f3699d3bf9..b6a86f0c26e80b02f2bc358e852bd60b1931f674 100644
+--- a/README.md
++++ b/README.md
+@@ -1,20 +1,68 @@
+ <div align="center">
+ <img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+ </div>
+ 
+-# Run and deploy your AI Studio app
++# NC Control Pro — LC Consultoria
+ 
+-This contains everything you need to run your app locally.
++Micro-SaaS para gestão de não conformidades em auditorias internas e operacionais (telecom).
+ 
+-View your app in AI Studio: https://ai.studio/apps/51168325-1fdf-4f7c-9fa5-4b6fa52a6fb5
++## Rodar localmente (sem erro de conexão)
+ 
+-## Run Locally
++**Pré-requisitos:** Node.js 20+
+ 
+-**Prerequisites:**  Node.js
++1. Instale as dependências:
++   ```bash
++   npm install
++   ```
++2. (Opcional para login real) configure `.env.local`:
++   ```bash
++   NEXT_PUBLIC_SUPABASE_URL=...
++   NEXT_PUBLIC_SUPABASE_ANON_KEY=...
++   NEXT_PUBLIC_GEMINI_API_KEY=...
++   ```
++3. Inicie o servidor:
++   ```bash
++   npm run dev
++   ```
++4. Abra no navegador:
++   - Landing: `http://localhost:3000`
++   - Login: `http://localhost:3000/login`
+ 
++> Se aparecer `ERR_CONNECTION_REFUSED`, normalmente o servidor não está rodando. Verifique se o terminal mostra `Ready`.
+ 
+-1. Install dependencies:
+-   `npm install`
+-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
+-3. Run the app:
+-   `npm run dev`
++## Scripts úteis
++
++- `npm run dev` → desenvolvimento em `0.0.0.0:3000` (aceita acesso local e de rede)
++- `npm run dev:localhost` → desenvolvimento fixo em `127.0.0.1:3000`
++- `npm run build` → build de produção
++- `npm run start` → servidor de produção em `0.0.0.0:3000`
++- `npm run lint` → lint do projeto
++
++
++
++## Baixar projeto em pasta única (para levar ao GitHub)
++
++Para gerar uma pasta única com os arquivos do projeto (sem `node_modules`, `.next` e `.git`) e também um `.zip`:
++
++```bash
++bash scripts/preparar-pacote-github.sh
++```
++
++Arquivos gerados:
++- `export/HubProjetosMonetizaveis/`
++- `export/HubProjetosMonetizaveis.zip`
++
++Depois, basta baixar o `.zip` e subir no seu repositório GitHub.
++
++## Deploy na Vercel
++
++O projeto já está preparado para Vercel (`vercel.json`).
++
++Passo a passo completo em: **[DEPLOY_VERCEL.md](./DEPLOY_VERCEL.md)**
++
++Resumo rápido:
++1. Subir este código no GitHub (conta `LienysCarvalho`).
++2. Importar o repositório na Vercel.
++3. Configurar variáveis: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_GEMINI_API_KEY`.
++4. Fazer deploy.
++5. Copiar o link final em **Vercel → Project → Domains** (`*.vercel.app`).
+ 
+EOF
+)
